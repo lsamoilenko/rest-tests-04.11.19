@@ -1,7 +1,7 @@
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
+import io.restassured.specification.RequestSpecification;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -12,6 +12,14 @@ import static org.hamcrest.core.Is.is;
 public class CreatePetTest {
 
     static long petId;
+
+     public RequestSpecification given(){
+      return RestAssured
+              .given()
+              .baseUri("https://petstore.swagger.io/v2")
+              .log().all()
+              .contentType(ContentType.JSON);
+    }
 
     @Test
     public void test1createPet() {
@@ -35,29 +43,22 @@ public class CreatePetTest {
                 "  \"status\": \"available\"\n" +
                 "}";
 
-        ValidatableResponse response = RestAssured
-                .given()
+        ValidatableResponse response = given()
                 .body(body)
-                .contentType(ContentType.JSON)
-                .log().all()
-                .post("https://petstore.swagger.io/v2/pet")
+                .post(PetEndpoint.CREATE_PET)
                 .then()
                 .statusCode(is(200))
                 .body("category.name", is(not("")))
                 .log().all();
         petId = response.extract().body().path("id");
-        System.out.println();
         System.out.println(petId);
     }
 
     @Test
     public void test2getPedById(){
         System.out.println(petId);
-        RestAssured
-                .given()
-                .contentType(ContentType.JSON)
-                .log().all()
-                .get("https://petstore.swagger.io/v2/pet/"+petId)
+        given()
+                .get(PetEndpoint.GET_PET, petId)
                 .then()
                 .statusCode(is(200))
                 .body("category.name", is(not("")))
@@ -67,11 +68,8 @@ public class CreatePetTest {
     @Test
     public void test3deletePedById(){
         System.out.println(petId);
-        RestAssured
-                .given()
-                .contentType(ContentType.JSON)
-                .log().all()
-                .delete("https://petstore.swagger.io/v2/pet/"+petId)
+                given()
+                .delete(PetEndpoint.DELETE_PET, petId)
                 .then()
                 .statusCode(is(200))
                 .log().all();
