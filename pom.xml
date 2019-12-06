@@ -83,12 +83,6 @@
             <version>${serenity.version}</version>
         </dependency>
 
-        <!--for JavaObj to JSON serialisation-->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.databind.version}</version>
-        </dependency>
 
         <!--to enable Serenity logging-->
         <dependency>
@@ -98,12 +92,22 @@
             <scope>test</scope>
         </dependency>
 
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.10</version>
+                <scope>provided</scope>
+            </dependency>
+
         <!-- https://mvnrepository.com/artifact/net.serenity-bdd.maven.plugins/serenity-maven-plugin -->
         <dependency>
             <groupId>net.serenity-bdd.maven.plugins</groupId>
             <artifactId>serenity-maven-plugin</artifactId>
             <version>2.0.89</version>
         </dependency>
+
+
 
 
     </dependencies>

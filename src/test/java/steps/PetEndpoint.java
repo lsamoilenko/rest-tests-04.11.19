@@ -1,3 +1,5 @@
+package steps;
+
 import data.Pet;
 import data.Status;
 import io.restassured.filter.log.LogDetail;
